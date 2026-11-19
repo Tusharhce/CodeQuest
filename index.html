@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeQuest – Coding Challenges</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#f3f6fb;--panel:#fff;--ink:#0b1b33;--mute:#5a6b85;--line:#d3dcec;--soft:#eef3fb;--blue:#3b6bff;--lime:#2dd4a0;--pink:#ff6b81;--cyan:#22c7e8;--yel:#ffc53d;--dk:#0b1b33}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 80% -10%,#dbe6ff 0,transparent 45%),linear-gradient(#e3eaf5 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,#e3eaf5 1px,transparent 1px) 0 0/32px 32px,var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;min-height:100vh}
+h1,h2,h3,.brand,.btn,.lang,.badge,.tag,.score{font-family:'JetBrains Mono',ui-monospace,monospace}
+h1,h2,h3,.brand{margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font-size:1.25rem;font-weight:700;color:var(--ink);text-decoration:none}
+.brand::before{content:'</>';color:var(--blue);margin-right:8px}
+.brand span{color:var(--blue)}
+.badge{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 14px;font-size:.85rem;font-weight:700;cursor:pointer}
+.badge::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lime);margin-right:8px}
+.badge:hover{border-color:var(--blue)}
+main{max-width:1000px;margin:0 auto;padding:22px 20px 70px}
+section[hidden]{display:none}
+h1{font-size:clamp(2rem,5.5vw,3.5rem);line-height:1.08;font-weight:700;letter-spacing:-1.5px;margin:18px 0 14px}
+h1 em{font-style:normal;color:var(--blue)}
+h1 em::after{content:'_';animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){h1 em::after,.load::after{animation:none}}
+.lead{color:var(--mute);max-width:580px;margin:0 0 26px;font-size:1.08rem}
+.step{font-size:1.1rem;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:10px}
+.step i{font-style:normal;background:var(--ink);color:#fff;border-radius:6px;display:inline-grid;place-items:center;width:28px;height:28px;font-size:.9rem}
+.langs{display:flex;flex-wrap:wrap;gap:10px}
+.lang{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 20px;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 1px 2px rgba(11,27,51,.06);transition:transform .12s,border-color .12s}
+.lang:hover{border-color:var(--blue);transform:translateY(-2px)}
+.lang[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lang[aria-pressed=true]::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lime);margin-right:8px}
+input{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font:inherit;min-width:0}
+input:focus{border-color:var(--blue);outline:0;box-shadow:0 0 0 3px rgba(59,107,255,.18)}
+.note{color:var(--mute);font-size:.9rem;margin:8px 0}
+.note a{color:var(--blue)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{position:relative;text-align:left;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:52px 20px 20px;cursor:pointer;font:inherit;box-shadow:0 2px 6px rgba(11,27,51,.06);transition:transform .15s,box-shadow .15s,border-color .15s;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;right:0;top:0;height:34px;border-bottom:1px solid var(--line);background:radial-gradient(circle,var(--pink) 4px,transparent 5px) 14px 50%/14px 14px no-repeat,radial-gradient(circle,var(--yel) 4px,transparent 5px) 32px 50%/14px 14px no-repeat,radial-gradient(circle,var(--lime) 4px,transparent 5px) 50px 50%/14px 14px no-repeat,var(--soft)}
+.card::after{content:'';position:absolute;left:0;right:0;top:34px;height:3px;background:var(--c)}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(59,107,255,.16);border-color:var(--c)}
+.card[aria-disabled=true]{opacity:.55;box-shadow:none}
+.card h3{font-size:1.35rem}
+.card p{margin:6px 0 0;color:var(--mute)}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 18px}
+.bar h2{font-size:1.8rem;padding-left:14px;border-left:5px solid var(--c)}
+.btn{background:var(--c,var(--blue));color:var(--dk);border:1px solid rgba(11,27,51,.15);border-radius:8px;padding:8px 16px;font-size:.88rem;font-weight:700;cursor:pointer;box-shadow:0 1px 2px rgba(11,27,51,.1)}
+.btn:hover:not(:disabled){filter:brightness(.95)}
+.btn.alt{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.6;cursor:wait}
+.score{background:var(--ink);color:#fff;padding:6px 14px;border-radius:8px;font-size:.9rem;font-weight:700}
+.load,.err{padding:30px;text-align:center;color:var(--mute)}
+.load::after{content:'▍';animation:blink 1s steps(1) infinite}
+.err{color:#d6334f}
+.q,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 6px rgba(11,27,51,.05)}
+.q{border-left:5px solid var(--c)}
+.q h3{font-size:1.02rem;margin-bottom:10px;white-space:pre-wrap;font-weight:700;line-height:1.5}
+.opt{display:block;width:100%;text-align:left;background:#f7f9fd;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:8px 0;font:inherit;cursor:pointer;white-space:pre-wrap}
+.opt:hover:not(:disabled){border-color:var(--blue);background:#fff}
+.opt.ok{background:#d6f7e9;border-color:#1fb383;font-weight:500}
+.opt.bad{background:#ffe1e6;border-color:#f0506a;font-weight:500}
+.why{margin:10px 0 0;color:#1d5fd1;font-size:.95rem}
+.dsa{display:grid;grid-template-columns:270px 1fr;gap:18px}
+@media(max-width:760px){.dsa{grid-template-columns:1fr}}
+.list{display:flex;flex-direction:column;gap:10px}
+.list button{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left;font:600 .88rem 'JetBrains Mono',monospace;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.list button:hover{border-color:var(--blue)}
+.list button[aria-current=true]{border-color:var(--blue);box-shadow:inset 4px 0 0 var(--blue),0 4px 12px rgba(59,107,255,.14)}
+.tag{font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:99px;color:var(--dk);white-space:nowrap}
+.Easy{background:#c9f5e2}.Medium{background:#ffeab0}.Hard{background:#ffd0d8}
+.panel h3{font-size:1.3rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.panel pre{background:var(--soft);border:1px solid var(--line);padding:10px 12px;border-radius:8px;overflow-x:auto;font:.85rem 'JetBrains Mono',monospace;white-space:pre-wrap}
+textarea.code{width:100%;min-height:230px;background:#0b1b33;color:#d6e4ff;border:1px solid #0b1b33;border-radius:10px;padding:14px;font:.88rem/1.55 'JetBrains Mono',monospace;resize:vertical;tab-size:2;margin-top:12px}
+textarea.code:focus{outline:0;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,199,232,.25)}
+.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.res{margin-top:14px;padding:12px 14px;border-radius:10px;border:1px solid;border-left-width:5px}
+.res.correct{background:#e6faf2;border-color:#1fb383}.res.partial{background:#fff6dc;border-color:#e0a800}.res.incorrect{background:#ffecef;border-color:#f0506a}
+.chat{background:var(--panel);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;height:60vh;min-height:360px;box-shadow:0 2px 6px rgba(11,27,51,.05)}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:86%;padding:10px 14px;border-radius:12px;white-space:pre-wrap;word-wrap:break-word}
+.m.u{align-self:flex-end;background:var(--blue);color:#fff}
+.m.a{align-self:flex-start;background:var(--soft);border:1px solid var(--line)}
+.m pre{background:#0b1b33;color:#9cf0d6;padding:10px;border-radius:8px;overflow-x:auto;font:.82rem 'JetBrains Mono',monospace;white-space:pre}
+.send{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line)}
+.send input{flex:1}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="#" id="logo">Code<span>Quest</span></a><button class="badge" id="badge" hidden></button></header>
+<main>
+<section id="v-home">
+  <h1>Pick a language.<br><em>Crack the challenge.</em></h1>
+  <p class="lead">Fresh MCQs and DSA problems, written by AI every time you reload, plus a tutor that answers anything.</p>
+  <h2 class="step"><i>1</i>Choose your language</h2>
+  <div class="langs" id="langs"></div>
+  <h2 class="step"><i>2</i>Start practicing</h2>
+  <div class="cards" id="cards"></div>
+  <p class="note" id="gate" aria-live="polite"></p>
+</section>
+<section id="v-mcq" hidden style="--c:var(--lime)"></section>
+<section id="v-dsa" hidden style="--c:var(--pink)"></section>
+<section id="v-ai" hidden style="--c:var(--cyan)"></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const LANGS=['Python','C','C++','Java','JavaScript'];
+const S={lang:''};
+const loaded={};
+
+/* ---- Gemini helper ---- */
+async function gem(prompt,o={}){
+  const json=o.json!==false;
+  const contents=o.contents||[{role:'user',parts:[{text:prompt}]}];
+  const r=await fetch('/api/gemini',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents,system:o.system,json})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.error?.message||'Server not reachable. Run the project with "vercel dev" or open the deployed site.');
+  const t=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text).join('');
+  return json?JSON.parse(t.replace(/^\s*```(json)?|```\s*$/g,'')):t;
+}
+
+/* ---- Home ---- */
+const ready=()=>!!S.lang;
+const SEC=[['mcq','MCQ Quiz','--lime','8 fresh multiple-choice questions'],['dsa','DSA Problems','--pink','5 problems from Easy to Hard'],['ai','AI Tutor','--cyan','Ask any coding question']];
+function drawHome(){
+  $('langs').innerHTML=LANGS.map(l=>`<button class="lang" aria-pressed="${S.lang===l}" data-l="${l}">${l}</button>`).join('');
+  document.querySelectorAll('.lang').forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;Object.keys(loaded).forEach(k=>delete loaded[k]);drawHome();drawBadge();prefetch()});
+  $('cards').innerHTML=SEC.map(([v,t,c,d])=>`<button class="card" data-v="${v}" style="--c:var(${c})" aria-disabled="${!ready()}"><h3>${t}</h3><p>${d}${S.lang?' in '+esc(S.lang):''}</p></button>`).join('');
+  document.querySelectorAll('.card').forEach(b=>b.onclick=()=>go(b.dataset.v));
+  $('gate').textContent=ready()?'':'Choose a language to unlock the sections.';
+}
+function drawBadge(){$('badge').hidden=!S.lang;$('badge').textContent=S.lang+' · change'}
+$('badge').onclick=$('logo').onclick=e=>{e.preventDefault();go('home')};
+function go(v){
+  if(v!=='home'&&!ready()){$('gate').scrollIntoView({behavior:'smooth',block:'center'});return}
+  ['home','mcq','dsa','ai'].forEach(x=>$('v-'+x).hidden=x!==v);
+  scrollTo(0,0);
+  if(v==='mcq'&&!loaded.mcq){loaded.mcq=1;loadMCQ()}
+  if(v==='dsa'&&!loaded.dsa){loaded.dsa=1;loadDSA()}
+  if(v==='ai'&&!loaded.ai){loaded.ai=1;initAI()}
+}
+const head=(t,extra='',fn)=>`<div class="bar"><h2>${t}</h2><div class="row" style="margin:0">${extra}${fn?'<button class="btn newq">New questions</button>':''}<button class="btn alt back">Home</button></div></div>`;
+function bind(el,fn){el.querySelector('.back').onclick=()=>go('home');const n=el.querySelector('.newq');if(n)n.onclick=fn}
+
+/* ---- Built-in question banks (work even when the AI/API key is unavailable) ---- */
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+const M=a=>a.map(([q,o,a,e])=>({q,o,a,e}));
+const SHARED_MCQ=M([["Your question?",["Option A","Option B","Option C","Option D"],1,"Why B is right."],
+["What is the time complexity of binary search on a sorted array?",["O(n)","O(log n)","O(n log n)","O(1)"],1,"Each step halves the search range."],
+["Which data structure follows FIFO order?",["Stack","Queue","Tree","Heap"],1,"A queue removes the oldest element first."],
+["What is the worst-case time complexity of quicksort?",["O(n log n)","O(n)","O(n²)","O(log n)"],2,"Bad pivots on every step give O(n²)."],
+["Which traversal of a binary search tree gives sorted output?",["Preorder","Postorder","Inorder","Level order"],2,"Inorder visits left, node, right."],
+["Which structure checks 'seen before?' in O(1) average time?",["Array","Linked list","Hash set","Stack"],2,"Hash sets give average O(1) lookup."],
+["Which algorithm finds shortest paths in an unweighted graph?",["DFS","BFS","Kruskal","Prim"],1,"BFS explores level by level."],
+["What does recursion use internally to track calls?",["Queue","Heap","Call stack","Hash map"],2,"Each call is pushed on the call stack."],
+["What is the time complexity of merge sort?",["O(n)","O(n²)","O(log n)","O(n log n)"],3,"log n levels of splitting, n work per level."],
+["Which structure gives the smallest element first?",["Min-heap","Stack","Queue","Array"],0,"A min-heap keeps the minimum at the root."],
+["Dijkstra's algorithm fails with which kind of graph?",["Directed","Undirected","Negative edge weights","Sparse"],2,"Negative edges break its core assumption."],
+["Which data structure follows LIFO order?",["Queue","Stack","Heap","Graph"],1,"A stack pops the most recent push."],
+["BFS uses which data structure?",["Stack","Queue","Heap","Set"],1,"A queue processes nodes level by level."],
+["Iterative DFS typically uses which structure?",["Queue","Stack","Heap","Deque only"],1,"A stack mimics the recursion order."],
+["Space complexity of recursive factorial(n)?",["O(1)","O(log n)","O(n)","O(n²)"],2,"n stack frames are alive at the deepest point."],
+["Inserting at the head of a linked list costs?",["O(1)","O(log n)","O(n)","O(n²)"],0,"Only a few pointers change."],
+["Accessing array element by index costs?",["O(n)","O(1)","O(log n)","O(n²)"],1,"Index maths gives direct access."],
+["Height of a balanced BST with n nodes?",["O(n)","O(log n)","O(1)","O(n²)"],1,"Each level roughly doubles the node count."],
+["Worst-case time of bubble sort?",["O(n)","O(n log n)","O(n²)","O(log n)"],2,"Nested passes over the array."],
+["Which sort is stable and O(n log n) in every case?",["Quick sort","Heap sort","Merge sort","Selection sort"],2,"Merge sort keeps equal items in order."],
+["Chaining in a hash table stores collisions in what?",["Linked lists","Stacks only","Trees only","Nothing"],0,"Each bucket holds a list of entries."],
+["Inserting into a binary heap costs?",["O(1)","O(log n)","O(n)","O(n log n)"],1,"The new item bubbles up one path."],
+["Topological sort works only on which graphs?",["Any graph","Cyclic graphs","DAGs","Complete graphs"],2,"It needs a directed graph with no cycles."],
+["Dynamic programming relies on which property?",["Overlapping subproblems","Randomness","Sorting","Pointers"],0,"Results of repeated subproblems are reused."],
+["Which technique detects a cycle in a linked list?",["Binary search","Tortoise and hare","Heap sort","Hashing only"],1,"A fast and a slow pointer eventually meet."],
+["Which algorithm builds a minimum spanning tree by sorting edges?",["Kruskal","Dijkstra","BFS","Floyd"],0,"Kruskal adds the cheapest edge that makes no cycle."],
+["The sliding window technique suits which problems?",["Contiguous subarrays/substrings","Graph colouring","Matrix inverse","Hashing keys"],0,"The window moves over a contiguous range."],
+["Best-case time complexity of insertion sort?",["O(n²)","O(n)","O(log n)","O(n log n)"],1,"Already sorted input needs one pass."],
+["Which technique finds a pair summing to a target in a sorted array?",["Two pointers","Recursion","Hashing only","Bubble sort"],0,"Move pointers inward based on the sum."]]);
+const LANG_MCQ={
+Python:M([["Which Python type is immutable?",["list","dict","set","tuple"],3,"Tuples cannot change after creation."],["What does len([1,2,3][1:]) return?",["1","2","3","Error"],1,"The slice is [2,3]."],["What does 3 // 2 give?",["1.5","1","2","0"],1,"// is floor division."],["What does bool([]) return?",["True","False","None","Error"],1,"Empty containers are falsy."],["Which keyword defines a function?",["func","function","def","fn"],2,"Python uses def."],["What does 'abc'[::-1] give?",["abc","cba","bca","Error"],1,"A step of -1 reverses the string."],["What does {'a':1}.get('b') return?",["0","KeyError","None","False"],2,"get returns None for missing keys."],["What does 2 ** 3 give?",["6","5","8","9"],2,"** is exponentiation."]]),
+C:M([["Which function releases memory from malloc()?",["delete","free()","release()","remove()"],1,"free() returns heap memory."],["Typical sizeof(int) on a modern PC?",["1","2","4","8"],2,"An int is usually 4 bytes."],["What does printf(\"%d\", 7/2) print?",["3.5","3","4","2"],1,"Integer division drops the fraction."],["Array indexing in C starts at?",["0","1","-1","Depends"],0,"The first element is a[0]."],["Which operator gives a variable's address?",["*","&","#","@"],1,"& is the address-of operator."],["Which character ends a C string?",["'\\n'","'\\0'","' '","EOF"],1,"The null character terminates strings."],["In C, *p means?",["Address of p","Value at address p","Delete p","Size of p"],1,"* dereferences a pointer."],["What does printf(\"%d\", x++) print if x is 5?",["5","6","4","Error"],0,"Post-increment uses the old value first."]]),
+'C++':M([["Which container gives O(1) average lookup by key?",["map","unordered_map","vector","list"],1,"unordered_map is a hash table."],["What does vector::push_back do?",["Adds at front","Adds at end","Sorts","Removes last"],1,"It appends to the end."],["Which header provides cout?",["<stdio.h>","<iostream>","<string>","<vector>"],1,"iostream has the stream objects."],["What does std::string(\"hi\").size() return?",["1","2","3","0"],1,"There are two characters."],["Which symbol declares a reference?",["*","&","#","@"],1,"int& r = x; makes a reference."],["Memory from new must be freed with?",["free","delete","remove","erase"],1,"new pairs with delete."],["vector<int> v(3,7) contains?",["7 7 7","3 7","0 0 0","3 3 3"],0,"Three elements each equal to 7."],["What does 5/2 give in C++ with ints?",["2.5","2","3","0"],1,"Integer division truncates."]]),
+Java:M([["Which method compares String contents?",["==","equals()","compare()","same()"],1,"== compares references."],["Which keyword stops a class being inherited?",["static","private","final","abstract"],2,"A final class cannot be extended."],["Which is the program entry point?",["start()","public static void main","run()","init()"],1,"The JVM calls main."],["Default value of an int array element?",["null","0","-1","Undefined"],1,"Numeric arrays start at 0."],["Which collection has no duplicates?",["ArrayList","HashSet","LinkedList","Vector"],1,"A set stores unique items."],["What does 10/4 give with ints?",["2.5","2","3","4"],1,"Integer division truncates."],["Are Java Strings immutable?",["Yes","No","Only final ones","Only in arrays"],0,"String objects never change."],["Which keyword inherits a class?",["implements","extends","inherits","super"],1,"extends creates a subclass."]]),
+JavaScript:M([["What does typeof null return?",["null","undefined","object","number"],2,"A long-standing JavaScript quirk."],["Which operator checks value AND type?",["==","=","===","!="],2,"=== is strict equality."],["What does [1,2,3].map(x=>x*2) return?",["[1,2,3]","[2,4,6]","6","[2,3,4]"],1,"map transforms every element."],["What is 0.1+0.2===0.3?",["true","false","error","undefined"],1,"Floating-point rounding."],["let is scoped to what?",["Function","Block","Global","File"],1,"let is block-scoped."],["What does '5'+3 give?",["8","'53'","53 (number)","Error"],1,"+ concatenates when one side is a string."],["Array.isArray([]) returns?",["true","false","undefined","error"],0,"It checks for arrays."],["NaN === NaN is?",["true","false","error","null"],1,"NaN is not equal to itself."]])};
+/* Generated questions: new numbers every refresh */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function mk(q,ans,e){const s=new Set([ans]);for(const d of [1,-1,2,-2,3,4])if(s.size<4&&ans+d>=0&&!s.has(ans+d))s.add(ans+d);const o=shuffle([...s]);return{q,o:o.map(String),a:o.indexOf(ans),e}}
+function genLoop(L){
+  const A=ri(0,5),St=ri(1,4),B=A+ri(8,30),n=Math.ceil((B-A)/St);
+  const code=L==='Python'?`for i in range(${A}, ${B}, ${St}):\n    count += 1`:L==='JavaScript'?`for (let i = ${A}; i < ${B}; i += ${St}) {\n  count++;\n}`:`for (int i = ${A}; i < ${B}; i += ${St}) {\n    count++;\n}`;
+  return mk(`count starts at 0. What is count after this loop?\n\n${code}`,n,`The loop runs from ${A} up to (not including) ${B} in steps of ${St}, which is ${n} times.`);
+}
+function genMath(L){
+  const A=ri(2,9),B=ri(2,9),C=ri(2,5),D=ri(1,Math.min(9,(A+B)*C)),ans=(A+B)*C-D,py=L==='Python',sc=py?'':';';
+  const decl=py?'x = ':L==='JavaScript'?'let x = ':'int x = ';
+  const out={Python:'print(x)',JavaScript:'console.log(x);',C:'printf("%d", x);','C++':'cout << x;',Java:'System.out.println(x);'}[L];
+  return mk(`What does this code print?\n\n${decl}${A}${sc}\nx += ${B}${sc}\nx *= ${C}${sc}\nx -= ${D}${sc}\n${out}`,ans,`(${A} + ${B}) × ${C} − ${D} = ${ans}.`);
+}
+/* DSA bank: [function name, "arg:type,...", return type, title, difficulty, description, example] */
+const DSA_BANK=[['functionName','nums:int[],k:int','int','Problem title','Medium','Description here.','Example here'],
+['twoSum','nums:int[],target:int','int[]','Two Sum','Easy','Return the indices of the two numbers that add up to the target. Exactly one solution exists.','nums = [2,7,11,15], target = 9 → [0,1]'],
+['isValid','s:string','bool','Valid Parentheses','Easy','Return true if every bracket in a string of ()[]{} is closed in the correct order.','"()[]{}" → true, "(]" → false'],
+['search','nums:int[],target:int','int','Binary Search','Easy','Return the index of target in a sorted array, or -1. Aim for O(log n).','[-1,0,3,5,9,12], 9 → 4'],
+['containsDuplicate','nums:int[]','bool','Contains Duplicate','Easy','Return true if any value appears at least twice.','[1,2,3,1] → true'],
+['isPalindrome','s:string','bool','Valid Palindrome','Easy','Return true if the string reads the same both ways, ignoring case and non-alphanumeric characters.','"A man, a plan, a canal: Panama" → true'],
+['missingNumber','nums:int[]','int','Missing Number','Easy','The array holds n distinct numbers from 0..n. Return the one missing number.','[3,0,1] → 2'],
+['isAnagram','s:string,t:string','bool','Valid Anagram','Easy','Return true if t is an anagram of s.','"listen", "silent" → true'],
+['maxSubArray','nums:int[]','int','Maximum Subarray','Medium','Return the largest sum of any contiguous subarray.','[-2,1,-3,4,-1,2,1,-5,4] → 6'],
+['lengthOfLongestSubstring','s:string','int','Longest Unique Substring','Medium','Return the length of the longest substring without repeating characters.','"abcabcbb" → 3'],
+['productExceptSelf','nums:int[]','int[]','Product Except Self','Medium','Return an array where each element is the product of all other elements, without using division.','[1,2,3,4] → [24,12,8,6]'],
+['longestConsecutive','nums:int[]','int','Longest Consecutive Sequence','Medium','Return the length of the longest run of consecutive integers in O(n).','[100,4,200,1,3,2] → 4'],
+['subarraySum','nums:int[],k:int','int','Subarray Sum Equals K','Medium','Return the number of contiguous subarrays whose sum equals k.','[1,1,1], 2 → 2'],
+['coinChange','coins:int[],amount:int','int','Coin Change','Medium','Return the fewest coins that make up the amount, or -1 if impossible.','[1,2,5], 11 → 3'],
+['lengthOfLIS','nums:int[]','int','Longest Increasing Subsequence','Medium','Return the length of the longest strictly increasing subsequence.','[10,9,2,5,3,7,101,18] → 4'],
+['trap','height:int[]','int','Trapping Rain Water','Hard','Given bar heights (width 1), compute how much rain water is trapped.','[0,1,0,2,1,0,1,3,2,1,2,1] → 6'],
+['firstMissingPositive','nums:int[]','int','First Missing Positive','Hard','Return the smallest missing positive integer in O(n) time and O(1) extra space.','[3,4,-1,1] → 2'],
+['longestValidParentheses','s:string','int','Longest Valid Parentheses','Hard','Return the length of the longest valid (well-formed) parentheses substring.','")()())" → 4'],
+['minDistance','word1:string,word2:string','int','Edit Distance','Hard','Return the minimum insert, delete or replace operations to turn word1 into word2.','"horse", "ros" → 3']
+].map(([n,a,r,t,d,desc,ex])=>({n,a:a.split(',').map(x=>x.split(':')),r,t,d,desc,ex}));
+function starter(p,L){
+  const nm=p.a.map(x=>x[0]),snake=p.n.replace(/[A-Z]/g,c=>'_'+c.toLowerCase());
+  if(L==='Python')return `def ${snake}(${nm.join(', ')}):\n    # your code here\n    pass`;
+  if(L==='JavaScript')return `function ${p.n}(${nm.join(', ')}) {\n  // your code here\n}`;
+  if(L==='Java'||L==='C++'){
+    const T={Java:{'int[]':'int[]',int:'int',string:'String',bool:'boolean'},'C++':{'int[]':'vector<int>&',int:'int',string:'string',bool:'bool'}}[L];
+    const args=p.a.map(([x,t])=>T[t]+' '+x).join(', '),ret=L==='C++'&&p.r==='int[]'?'vector<int>':T[p.r];
+    return L==='Java'?`class Solution {\n    public ${ret} ${p.n}(${args}) {\n        // your code here\n    }\n}`:`class Solution {\npublic:\n    ${ret} ${p.n}(${args}) {\n        // your code here\n    }\n};`;
+  }
+  const args=p.a.map(([x,t])=>t==='int[]'?`int* ${x}, int ${x}Size`:t==='string'?`char* ${x}`:`int ${x}`);
+  if(p.r==='int[]')args.push('int* returnSize');
+  return `${p.r==='int[]'?'int*':p.r==='bool'?'bool':'int'} ${p.n}(${args.join(', ')}) {\n    // your code here\n}`;
+}
+
+/* ---- AI questions: fetched in the background, shown in one click ---- */
+const pre={};
+const okMCQ=r=>Array.isArray(r)&&r.length&&r.every(x=>x&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(x.a))?r:null;
+const okDSA=r=>Array.isArray(r)&&r.length&&r.every(x=>x&&x.title&&x.description&&x.starter)?r:null;
+const fetchMCQ=()=>gem(`Create 6 multiple-choice questions for a student practising ${S.lang} and data structures & algorithms. Mix syntax, output prediction and complexity. Keep each question and explanation short. Seed ${Math.random()}. Return a JSON array of {"q": string, "o": array of exactly 4 strings, "a": index 0-3 of the correct option, "e": one-sentence explanation}.`).then(okMCQ).catch(()=>null);
+const fetchDSA=()=>gem(`Create 3 coding problems (1 Easy, 1 Medium, 1 Hard) for a student using ${S.lang}. Keep descriptions under 40 words. Seed ${Math.random()}. Return a JSON array of {"title": string, "difficulty": "Easy"|"Medium"|"Hard", "description": string, "examples": string, "starter": short starter code in ${S.lang} with the function signature and a comment, no solution}.`).then(okDSA).catch(()=>null);
+function prefetch(){pre.mcq=fetchMCQ();pre.dsa=fetchDSA()}
+async function useAI(kind,btn){
+  btn.disabled=true;btn.textContent='Loading AI questions…';
+  const r=await (pre[kind]||(pre[kind]=kind==='mcq'?fetchMCQ():fetchDSA()));
+  pre[kind]=kind==='mcq'?fetchMCQ():fetchDSA(); // start the next set for later
+  if(!r){btn.disabled=false;btn.textContent='AI unavailable – built-in questions still work';return}
+  kind==='mcq'?showMCQ(r,'ai'):showDSA(r,'ai');
+}
+const aiBtn=`<button class="btn alt ai">Fresh AI questions</button>`;
+const srcNote=s=>`<p class="note">${s==='ai'?'Showing AI-generated questions.':'Instant question set. Tap "Fresh AI questions" for new ones.'}</p>`;
+
+/* ---- MCQ ---- */
+function loadMCQ(){showMCQ(shuffle([...shuffle([...SHARED_MCQ,...LANG_MCQ[S.lang]]).slice(0,6),genLoop(S.lang),genMath(S.lang)]),'bank')}
+function showMCQ(qs,src){
+  const el=$('v-mcq');let score=0,done=0;
+  el.innerHTML=head('MCQ Quiz',`<span class="score" id="sc">0 / ${qs.length}</span>`+aiBtn,1)+srcNote(src)+qs.map((x,i)=>`<div class="q" data-i="${i}"><h3>${i+1}. ${esc(x.q)}</h3>${x.o.map((o,j)=>`<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}<p class="why" hidden>${esc(x.e||'')}</p></div>`).join('');
+  bind(el,loadMCQ);el.querySelector('.ai').onclick=e=>useAI('mcq',e.target);
+  el.querySelectorAll('.q').forEach(q=>q.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const x=qs[q.dataset.i],j=+b.dataset.j;
+    q.querySelectorAll('.opt').forEach((o,k)=>{o.disabled=true;if(k===x.a)o.classList.add('ok')});
+    if(j===x.a)score++;else b.classList.add('bad');
+    q.querySelector('.why').hidden=false;done++;
+    $('sc').textContent=score+' / '+qs.length+(done===qs.length?' – finished':'');
+  }));
+}
+
+/* ---- DSA ---- */
+const pick=(d,n)=>shuffle(DSA_BANK.filter(p=>p.d===d)).slice(0,n);
+function loadDSA(){showDSA([...pick('Easy',2),...pick('Medium',2),...pick('Hard',1)].map(p=>({title:p.t,difficulty:p.d,description:p.desc,examples:p.ex,starter:starter(p,S.lang)})),'bank')}
+function showDSA(ps,src){
+  const el=$('v-dsa'),saved={};let cur=0;
+  el.innerHTML=head('DSA Problems',aiBtn,0)+srcNote(src)+`<div class="dsa"><div class="list" id="pl"></div><div class="panel" id="pp"></div></div>`;
+  bind(el);el.querySelector('.ai').onclick=e=>useAI('dsa',e.target);
+  const show=i=>{
+    if($('ed'))saved[cur]=$('ed').value;cur=i;const p=ps[i];
+    $('pl').innerHTML=ps.map((x,k)=>`<button data-k="${k}" ${k===i?'aria-current="true"':''}><span>${esc(x.title)}</span><span class="tag ${esc(x.difficulty)}">${esc(x.difficulty)}</span></button>`).join('');
+    $('pl').querySelectorAll('button').forEach(b=>b.onclick=()=>show(+b.dataset.k));
+    $('pp').innerHTML=`<h3>${esc(p.title)} <span class="tag ${esc(p.difficulty)}">${esc(p.difficulty)}</span></h3><p>${esc(p.description)}</p><pre>${esc(p.examples||'')}</pre>
+    <textarea class="code" id="ed" spellcheck="false" aria-label="Code editor">${esc(saved[i]??p.starter)}</textarea>
+    <div class="row"><button class="btn" id="chk">Check my solution</button><button class="btn alt" id="rst">Reset code</button></div><div id="res" aria-live="polite"></div>
+    <p class="note">The AI reviews your code against the problem and edge cases. It does not run it.</p>`;
+    const ed=$('ed');
+    ed.onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();ed.setRangeText('  ',ed.selectionStart,ed.selectionEnd,'end')}};
+    $('rst').onclick=()=>{ed.value=p.starter};
+    $('chk').onclick=async()=>{
+      const b=$('chk');b.disabled=true;b.textContent='Checking…';
+      try{
+        const r=await gem(`You are a strict code judge. Language: ${S.lang}.\nProblem: ${p.title}\n${p.description}\nExamples: ${p.examples}\n\nStudent code:\n${ed.value}\n\nTrace the code against the examples and edge cases. Return JSON: {"verdict":"correct"|"partial"|"incorrect","feedback":"2-3 sentences","hint":"one hint that does not give the full solution"}`);
+        const v=['correct','partial','incorrect'].includes(r.verdict)?r.verdict:'partial';
+        $('res').innerHTML=`<div class="res ${v}"><strong>${v==='correct'?'Looks correct!':v==='partial'?'Almost there':'Not quite yet'}</strong><p>${esc(r.feedback)}</p>${v==='correct'?'':`<p><b>Hint:</b> ${esc(r.hint)}</p>`}</div>`;
+      }catch(e){$('res').innerHTML=`<div class="res incorrect">Could not check: ${esc(e.message)}</div>`}
+      b.disabled=false;b.textContent='Check my solution';
+    };
+  };
+  show(0);
+}
+
+/* ---- AI Tutor ---- */
+function initAI(){
+  const el=$('v-ai');
+  el.innerHTML=head('AI Tutor')+`<div class="chat"><div class="msgs" id="msgs" aria-live="polite"></div><form class="send" id="f"><input id="inp" placeholder="Ask a ${esc(S.lang)} or DSA question" aria-label="Your question" autocomplete="off"><button class="btn">Send</button></form></div>`;
+  bind(el);
+  const msgs=$('msgs');let hist=[];
+  const fmt=t=>t.split('```').map((s,i)=>i%2?`<pre>${esc(s.replace(/^[\w+#-]*\n/,''))}</pre>`:esc(s)).join('');
+  const add=(r,t)=>{const d=document.createElement('div');d.className='m '+(r==='user'?'u':'a');d.innerHTML=fmt(t);msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d};
+  add('model',`Hi! I'm your ${S.lang} tutor. Ask me about any algorithm, data structure or bug.`);
+  $('f').onsubmit=async e=>{
+    e.preventDefault();const text=$('inp').value.trim();if(!text)return;
+    $('inp').value='';add('user',text);hist.push({role:'user',parts:[{text}]});
+    const w=add('model','Thinking…');
+    try{
+      const reply=await gem('',{json:false,contents:hist,system:`You are a friendly coding tutor. The student is learning ${S.lang} and DSA. Answer in ${S.lang} unless asked otherwise, use fenced code blocks for code, and give hints before full solutions for practice problems.`});
+      hist.push({role:'model',parts:[{text:reply}]});w.innerHTML=fmt(reply||'No response received.');
+    }catch(err){hist.pop();w.innerHTML=fmt('Could not reach the AI: '+err.message)}
+    msgs.scrollTop=msgs.scrollHeight;
+  };
+}
+drawHome();
+</script>
+</body>
+</html>
